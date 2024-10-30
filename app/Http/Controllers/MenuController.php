@@ -18,6 +18,10 @@ class MenuController extends Controller
         return $this->menuService->index($resturantId);
     }
 
+    public function ajax($resturantId){
+        return $this->menuService->ajax($resturantId);
+    }
+
     public function create(){
         return $this->menuService->create();
     }

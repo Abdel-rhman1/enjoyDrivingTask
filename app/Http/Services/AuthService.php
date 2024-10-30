@@ -17,8 +17,10 @@ class AuthService{
         // dd($request);
         try {
             $signInResult = $this->auth->signInWithEmailAndPassword($request->email, $request->password);
-            // Cache::put($request->email , $signInResult->idToken() , 30);
+            
             session()->put('token',  $signInResult->idToken());
+            session()->put('email',  $request->email);
+
             return redirect('/')->with(['success'=>'Register Success pls Login']);
             
         } catch (\Throwable $e) {

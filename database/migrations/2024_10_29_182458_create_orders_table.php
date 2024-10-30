@@ -11,16 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_items', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name_ar');
-            $table->string('name_en');
-            $table->float('price');
-            $table->text('description');
-            
+            $table->string('user_email');//email
+    
             $table->unsignedBigInteger('resturant_id');
+
             $table->foreign('resturant_id')->references('id')->on('resturants')
                 ->onDelete('cascade');
+
+            // $table->float('sub_total')->default(0);
+            // $table->float('tax')->nullable()->default(0);
+            // $table->float('discount')->nullable()->default(0);
+            $table->float('total')->default(0);
+
+            $table->enum('status' , ['submitted','deliverd', 'pending','in-process' , 'in-way','canceled'])
+                    ->default('submitted');
+
             $table->timestamps();
         });
     }
@@ -30,6 +37,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu_items');
+        Schema::dropForeign('resturant_id');
+        Schema::dropIfExists('orders');
     }
 };

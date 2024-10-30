@@ -1,4 +1,9 @@
 <?php 
+
 return [
-    'firebase'
+    'orders'=>[
+        'status'=>[
+            'submitted','deliverd', 'pending','in-process' , 'in-way','canceled'
+        ]
+    ]
 ];

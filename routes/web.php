@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ResturantController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,4 +57,16 @@ Route::group(['prefix'=>'menus'] , function(){
     Route::get('edit/{id}' , [MenuController::class , 'edit'])->name('menus.edit');
     Route::post('update' , [MenuController::class , 'update'])->name('menus.update');
     Route::get('delete/{id}' , [MenuController::class , 'delete'])->name('menus.delete');
+    Route::get('ajax/{id}', [MenuController::class , 'ajax'])->name('menus.ajax');
+})->middleware('authenticated');
+
+
+
+Route::group(['prefix'=>'orders'] , function(){
+    Route::get('index' , [OrderController::class , 'index'])->name('orders.index');
+    Route::get('create' , [OrderController::class , 'create'])->name('orders.create');
+    Route::post('store' , [OrderController::class , 'store'])->name('orders.store');
+    Route::get('edit/{id}' , [OrderController::class , 'edit'])->name('orders.edit');
+    Route::post('update' , [OrderController::class , 'update'])->name('orders.update');
+    Route::get('delete/{id}' , [OrderController::class , 'delete'])->name('orders.delete');
 })->middleware('authenticated');

@@ -63,7 +63,7 @@
                 @isset($resturants)
                     var items = @json($resturants);
                 @endisset
-                
+
 
                 // Loop through items and add markers to the map
                 items.forEach(function(item) {
@@ -76,5 +76,71 @@
             alert("Geolocation is not supported by this browser.");
         }
     </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('addRow').addEventListener('click', function() {
+                var table = document.getElementById('dynamicTable').getElementsByTagName('tbody')[0];
+                var newRow = table.rows[0].cloneNode(true);
+                var inputs = newRow.getElementsByTagName('input');
+
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].value = '';
+                }
+
+                table.appendChild(newRow);
+
+                // Add event listener for the remove button
+                newRow.querySelector('.removeRow').addEventListener('click', function() {
+                    this.closest('tr').remove();
+                });
+            });
+
+            // Add event listener for the initial remove button
+            document.querySelectorAll('.removeRow').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    this.closest('tr').remove();
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#resturantSelect').change(function() {
+                var resturantId = $(this).val();
+
+                if (resturantId) {
+                    $.ajax({
+                        url: '{{ url('/menus/ajax') }}/' + resturantId,
+                        type: 'GET',
+                        success: function(response) {
+                            console.log(response);
+                            if (response.success) {
+                                var options = '<option value="">Select...</option>';
+                                $.each(response.data, function(index, item) {
+                                    options += '<option value="' + item.id + '">' + item
+                                        .name + '</option>';
+                                });
+                                $('#MenuBox').html(options);
+                            } else {
+                                $('#MenuBox').html(
+                                    '<option value="">No options available</option>');
+                            }
+
+                        },
+                        error: function(xhr) {
+                            console.error(xhr);
+                        }
+                    });
+                } else {
+                    $('#dataContainer').html('');
+                }
+            });
+        });
+    </script>
+
     </body>
-</html>
+
+    </html>

@@ -60,6 +60,10 @@
                         <li>
                             <a  href="{{route('resturants.map')}}"> Map </a>
                         </li>
+
+                        <li>
+                            <a  href="{{route('orders.index')}}"> Orders </a>
+                        </li>
                     </ul>
                 </li>
 

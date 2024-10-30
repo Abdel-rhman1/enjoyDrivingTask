@@ -16,11 +16,16 @@ class MenuService
     public function index($resturantId)
     {
         // dd($resturantId);
-        $menus = $this->menu->where('resturant_id' , 5)->with('resturant')->paginate(10);
+        $menus = $this->menu->where('resturant_id' , $resturantId)->with('resturant')->paginate(10);
         // dd($menus);
         return view('Dashboard.Menu.index', compact('menus' , 'resturantId'));
     }
 
+
+    public function ajax($resturantId){
+        $menus = $this->menu->where('resturant_id' , $resturantId)->get();
+        return response()->json(['success'=>true,'data'=>$menus], 200);
+    }
 
     public function create(){
         $resturants = Resturant::all();
