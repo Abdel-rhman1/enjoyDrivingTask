@@ -6,9 +6,9 @@ use App\Models\Resturant;
 use App\Http\Traits\PriceTrait;
 use App\Http\Controllers\FirebaseController;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 class OrderService
 {
-
     use PriceTrait;
     private $order;
     private $firebaseController;
@@ -18,7 +18,14 @@ class OrderService
     }
 
     public function index(){
-        $orders = $this->order->with('resturant')->paginate(10);
+        $orders = $this->order->with('resturant')
+        ->where(function($q){
+            $user = User::where('email' , session('email'))->first();
+            if($user->user_type=='customer'){
+                $q->where('user_email' , $user->email);
+            }
+        })
+        ->paginate(10);
         return view('Dashboard.Orders.index' , compact('orders'));
     }
 
@@ -48,13 +55,8 @@ class OrderService
                 return redirect()->back()->with('message','An Error Happend Pls try Again');
             }
     }
-
     
     public function delete(){
-
-    }
-
-    public function updateOrderStatus(){
 
     }
 }

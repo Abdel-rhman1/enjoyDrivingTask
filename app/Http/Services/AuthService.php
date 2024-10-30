@@ -4,7 +4,7 @@ namespace App\Http\Services;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Kreait\Firebase\Contract\Auth  as FirebaseAuth;
-
+use App\Models\User;
 class AuthService{
 
     private $auth;
@@ -14,7 +14,6 @@ class AuthService{
     }
 
     public function login($request){
-        // dd($request);
         try {
             $signInResult = $this->auth->signInWithEmailAndPassword($request->email, $request->password);
             
@@ -29,12 +28,16 @@ class AuthService{
     }
 
     public function register($request){
-        $user = $this->auth->createUser([
+        $data = [
+            'name'=>$request->name,
             'email' => $request->email,
             'password' => $request->password,
-        ]);
-
+            'user_type'=>$request['user_type'],
+        ];
+        $user = $this->auth->createUser($data);
+        User::create($data);
         if($user){
+
             return view('Auth.login')->with(['success'=>'Register Success pls Login']);
         }else{
             dd('Error In Creating User');

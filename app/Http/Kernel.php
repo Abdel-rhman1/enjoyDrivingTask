@@ -5,6 +5,7 @@ namespace App\Http;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\AuthenticatedMiddleware;
 use App\Http\Middleware\RedirectIfAuth;
+use App\Http\Middleware\ManagerMiddelware;
 class Kernel extends HttpKernel
 {
     /**
@@ -22,6 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        // 
         // AuthenticatedMiddleware::class,
     ];
 
@@ -68,6 +70,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'RedirectIfAuth'=>RedirectIfAuth::class,
         'authenticated'=>AuthenticatedMiddleware::class,
+        'ManagerMiddelware'=>ManagerMiddelware::class,
         
     ];
 

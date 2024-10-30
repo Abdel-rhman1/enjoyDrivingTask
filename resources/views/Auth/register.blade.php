@@ -50,6 +50,29 @@
                                         
                                     </div>
                                 </div>
+
+
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">User Type</label>
+                                        <select type="email" name="user_type" class="form-control">
+                                            @foreach (Config::get('config.userTypes') as $usertype)
+                                                <option value="{{$usertype}}">{{$usertype}}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @if ($errors->has('user_type'))
+                                            <div class="alert alert-danger">
+                                                <span>
+                                                    {{ $errors->first('user_type') }} </span>
+                                            </div>
+                                        @endif
+
+
+                                        
+                                    </div>
+                                </div>
+
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <label class="form-label">Password</label>
