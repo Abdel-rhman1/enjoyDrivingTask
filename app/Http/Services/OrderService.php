@@ -4,14 +4,17 @@ namespace App\Http\Services;
 use App\Models\Order;
 use App\Models\Resturant;
 use App\Http\Traits\PriceTrait;
+use App\Http\Controllers\FirebaseController;
 use Illuminate\Support\Facades\DB;
 class OrderService
 {
 
     use PriceTrait;
     private $order;
-    public function __construct(Order $order){
+    private $firebaseController;
+    public function __construct(Order $order , FirebaseController $firebaseController){
         $this->order = $order;
+        $this->firebaseController = $firebaseController;
     }
 
     public function index(){
@@ -32,10 +35,12 @@ class OrderService
             $order = $this->order->create([
                 'user_email'=>session('email'),
                 'total'=>$items['totalPrice'],
+                'status'=>'submitted',
                 'resturant_id'=>$orderData['resturant_id'],
             ]);
             $orderItems = $order->orderItems()->saveMany($items['items']);
             if($order && $orderItems){
+                $this->firebaseController->changeOrderStatus($order);
                 DB::commit();
                 return redirect(route('orders.index'));
             }else{
